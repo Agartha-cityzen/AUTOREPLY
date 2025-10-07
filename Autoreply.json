@@ -1,63 +1,75 @@
 {
-  "reglas_autorespuesta": [
+  "bot_config": {
+    "name": "AsistenteWhatsApp",
+    "language": "es",
+    "default_fallback": "Lo siento, no entiendo tu consulta. ¿Podrías reformularla o elegir una de las opciones siguientes?",
+    "fallback_options": [
+      "1) Consulta sobre productos",
+      "2) Horarios de atención",
+      "3) Soporte técnico",
+      "4) Contactar con un agente"
+    ],
+    "log_communications": true
+  },
+  "flows": [
     {
-      "nombre": "Bienvenida Desconocido",
-      "condiciones": {
-        "contacto_en_lista": "SI",
-        "horario": "SIEMPRE"
+      "id": "flow_welcome",
+      "trigger": {
+        "type": "event",
+        "name": "user_initiated"
       },
-      "excepciones": [
-        "",
-        ""
-      ],
-      "respuesta": {
-        "tipo": "TEMPLATE",
-        "template_name": "bienvenida_desconocido",
-        "variables": [Consulta General] []
-      }
-    },
-    {
-      "nombre": "Consulta General",
-      "condiciones": {
-        "contacto_en_lista": "SI",
-        "palabra_clave": ["hola", "saludos", "ayuda"]
-      },
-      "excepciones": [],
-      "respuesta": {
-        "tipo": "TEXTO",
-        "mensaje": "¡Hola!, gracias por Comunicarte con NEXUS: Asistemcia Técnica Informatica. Por favir escoja la opción CUALQUIERA. más te interese:\n1. Horarios\n2. Precios\n3. Domicilio"
-      }
-    },
-    {
-      "nombre": "Horario Solicitado",
-      "condiciones": {
-        "contacto_en_lista": "CUALQUIERA",
-        "palabra_clave": ["horario", "abren", "cierran"]
-      },
-      "excepciones": [],
-      "respuesta": {
-        "tipo": "TEMPLATE",
-        "template_name": "horarios_atencion",
-        "variables": []
-      }
-    }
-  ],
-  "plantillas_guardadas": {
-    "bienvenida_desconocido": {
-      "estructura_json": {
-        "type": "interactive",
-        "body": "...",
+      "response": {
+        "text": "¡Bienvenido! Soy el asistente de [TuEmpresa]. ¿En qué puedo ayudarte hoy?",
         "buttons": [
-          // ... JSON de la plantilla
+          {"id": "btn_productos", "text": "Productos"},
+          {"id": "btn_horarios", "text": "Horarios"},
+          {"id": "btn_soporte", "text": "Soporte"}
+        ]
+        },
+      "fallback": {
+        "text": "¿Qué opción te interesa? Elige un número: 1- Productos, 2- Horarios, 3- Soporte"
+      }
+    },
+    {
+      "id": "flow_productos",
+      "trigger": {
+        "type": "user_reply",
+        "conditions": ["text_contains:productos", "button_clicked:btn_productos"]
+      },
+      "response": {
+        "text": "Tenemos los siguientes productos: ... ¿Deseas más detalles o hacer un pedido?",
+        "cards": [
+          {"title": "Producto A", "subtitle": "Descripción breve", "image_url": "", "actions": [{"type": "reply", "text": "Detalles", "payload": "DETALLE_PROD_A"}]},
+          {"title": "Producto B", "subtitle": "Descripción breve", "image_url": "", "actions": [{"type": "reply", "text": "Detalles", "payload": "DETALLE_PROD_B"}]}
         ]
       }
     },
-    "horarios_atencion": {
-      "estructura_json": {
-        "type": "text",
-        "body": "..."
+    {
+      "id": "flow_horarios",
+      "trigger": {
+        "type": "user_reply",
+        "conditions": ["text_contains:horarios", "button_clicked:btn_horarios"]
+      },
+      "response": {
+        "text": "Nuestro horario es de lunes a viernes de 9:00 a 18:00 CET. ¿Quieres que te envíe el enlace para agendar una cita?"
+      }
+      },
+    {
+      "id": "flow_soporte",
+      "trigger": {
+        "type": "user_reply",
+        "conditions": ["text_contains:soporte", "button_clicked:btn_soporte"]
+      },
+      "response": {
+        "text": "Para soporte, por favor indica el problema o adjunta capturas. Un agente te atenderá en breve."
       }
     }
-    // ... más plantillas
+  ],
+  "audio_responses": [
+    // si aplicas respuestas de audio o notificaciones de voz, opcional
+  ],
+  "settings": {
+    "retry_on_failure": 2,
+    "max_concurrent_sessions": 5
   }
 }

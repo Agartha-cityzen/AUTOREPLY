@@ -3,7 +3,7 @@
     {
       "nombre": "Bienvenida Desconocido",
       "condiciones": {
-        "contacto_en_lista": "NO",
+        "contacto_en_lista": "SI",
         "horario": "SIEMPRE"
       },
       "excepciones": [

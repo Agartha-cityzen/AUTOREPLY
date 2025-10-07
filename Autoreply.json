@@ -1,0 +1,63 @@
+{
+  "reglas_autorespuesta": [
+    {
+      "nombre": "Bienvenida Desconocido",
+      "condiciones": {
+        "contacto_en_lista": "NO",
+        "horario": "SIEMPRE"
+      },
+      "excepciones": [
+        "",
+        ""
+      ],
+      "respuesta": {
+        "tipo": "TEMPLATE",
+        "template_name": "bienvenida_desconocido",
+        "variables": [Consulta General] []
+      }
+    },
+    {
+      "nombre": "Consulta General",
+      "condiciones": {
+        "contacto_en_lista": "SI",
+        "palabra_clave": ["hola", "saludos", "ayuda"]
+      },
+      "excepciones": [],
+      "respuesta": {
+        "tipo": "TEXTO",
+        "mensaje": "¡Hola!, gracias por Comunicarte con NEXUS: Asistemcia Técnica Informatica. Por favir escoja la opción CUALQUIERA. más te interese:\n1. Horarios\n2. Precios\n3. Domicilio"
+      }
+    },
+    {
+      "nombre": "Horario Solicitado",
+      "condiciones": {
+        "contacto_en_lista": "CUALQUIERA",
+        "palabra_clave": ["horario", "abren", "cierran"]
+      },
+      "excepciones": [],
+      "respuesta": {
+        "tipo": "TEMPLATE",
+        "template_name": "horarios_atencion",
+        "variables": []
+      }
+    }
+  ],
+  "plantillas_guardadas": {
+    "bienvenida_desconocido": {
+      "estructura_json": {
+        "type": "interactive",
+        "body": "...",
+        "buttons": [
+          // ... JSON de la plantilla
+        ]
+      }
+    },
+    "horarios_atencion": {
+      "estructura_json": {
+        "type": "text",
+        "body": "..."
+      }
+    }
+    // ... más plantillas
+  }
+}
